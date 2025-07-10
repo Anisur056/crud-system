@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>add data to mysqli</title>
+	<title>crud-multipage-add</title>
 	<style type="text/css">
 		body{
 			margin: 0px;
@@ -14,7 +14,7 @@
 			text-align: center;
 		}
 		input{
-			with:50%;
+			width:50%;
 			padding: 8px;
 			border:1px solid #ff9900;
 			transition: 0.3s;
@@ -34,10 +34,10 @@
 
 			$name = $_POST['name'];
 
-			$c = mysqli_connect('localhost','root','','adif_broadband_db');
+			$c = mysqli_connect('localhost','root','','test');
 
 
-			$do = "INSERT INTO client_list (name) VALUES ('$name')";
+			$do = "INSERT INTO `tbl_user` (name) VALUES ('$name')";
 
 			$done = mysqli_query($c, $do);
 
@@ -65,7 +65,3 @@
 
 </body>
 </html>
-
-<!-- database name: adif_broadband_db -->
-<!-- table name: client_list -->
-<!-- table colmn: id,name -->

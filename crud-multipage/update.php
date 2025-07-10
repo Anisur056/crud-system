@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>update data to mysqli</title>
+	<title>crud-multipage-update</title>
 	<style type="text/css">
 		body{
 			margin: 0px;
@@ -32,47 +32,35 @@
 	<?php
 
 		if(isset($_GET['id'])){
-
 			$id = $_GET['id'];
 		}else{
 			header('location:index.php');
 		}
 
 		if(isset($_POST['submit'])){
-
 			$id = $_POST['id'];
 			$name = $_POST['name'];
-
-			$c = mysqli_connect('localhost','root','','adif_broadband_db');
-
-			$do = "UPDATE client_list SET name = '$name' WHERE id = $id ";
-
+			$c = mysqli_connect('localhost','root','','test');
+			$do = "UPDATE `tbl_user` SET name = '$name' WHERE id = $id ";
 			$done = mysqli_query($c,$do);
-
 			if($done){
 				header('location:index.php');
 			}
-
 		}else{
 
 
-		$c = mysqli_connect('localhost','root','','adif_broadband_db');
-
-		$do = "SELECT * FROM client_list WHERE id= $id";
-
+		$c = mysqli_connect('localhost','root','','test');
+		$do = "SELECT * FROM `tbl_user` WHERE id= $id";
 		$done = mysqli_query($c,$do);
-
 		$show = mysqli_fetch_assoc($done);
 			
 		
 	?>
 
 	<form action="update.php?id=<?php $id;?>" method='post'>
-		
-			<input type="name" name="name" value="<?php echo $show['name'];?>"/><br>
-			<input type="submit" name="submit" value="submit"/>
-			<input type="hidden" name="id" value="<?php echo $id;?>">
-
+		<input type="name" name="name" value="<?php echo $show['name'];?>"/><br>
+		<input type="submit" name="submit" value="submit"/>
+		<input type="hidden" name="id" value="<?php echo $id;?>">
 	</form>
 	<?php
 	}
