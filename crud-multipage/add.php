@@ -1,67 +1,59 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>crud-multipage-add</title>
-	<style type="text/css">
-		body{
-			margin: 0px;
-			padding: 0px;
-			font-family: arial;
-			text-align: center;
-		}
-		form{
-			margin-top: 130px;
-			text-align: center;
-		}
-		input{
-			width:50%;
-			padding: 8px;
-			border:1px solid #ff9900;
-			transition: 0.3s;
-			border-radius: 3px;
-			margin: 8px;
-		}
-		input:focus{
-			box-shadow: 0 0 12px #ff9900;
-		}
+<?php
+	require ("db-config.php");
 
-	</style>
-</head>
-<body>
+	if(isset($_POST['submit'])){
+		$name = $_POST['name'];
 
-	<?php
-		if(isset($_POST['submit'])){
-
-			$name = $_POST['name'];
-
-			$c = mysqli_connect('localhost','root','','test');
-
-
-			$do = "INSERT INTO `tbl_user` (name) VALUES ('$name')";
-
-			$done = mysqli_query($c, $do);
-
-			if($done){
-				echo "successfully added";
-				echo " <a href='add.php'>Add Another</a><br> ";
-				echo " <a href='index.php'>view all</a><br> ";
-			}else{
-				echo "no";
-			}
-
+		if(!isset($name) || trim($name) == ''){
+			$error = "Input Cannot be empty";
 		}else{
-	?>
-
-	<form action="add.php" method='post'>
-		
-			<input type="name" name="name" placeholder="Enter Your Name"><br>
-			<input type="submit" name="submit" value="submit">
-
-	</form>
-
-	<?php
+			$sql = "INSERT INTO `tbl_user` (name) VALUES ('$name')";
+			$execute = mysqli_query($dbConnection,$sql);
+			if($execute){
+				header('location: index.php');
+			}
 		}
-	?>
+	}
+?>
 
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>crud-multipage-add</title>
+	<link rel="stylesheet" href="bootstrap.min.css">
+  </head>
+  <body>
+	  <section class="container py-5">
+
+		<?php if(isset($error)): ?>
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<strong>Empty Field.</strong> You cannot leave name empty.
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		<?php endif; ?>
+
+		<div class="card">
+			<form method="post">
+				<div class="card-header d-flex justify-content-between align-items-center">
+					<h5>Crud-Multipage-add</h5>
+					<a href="index.php" class="btn btn-sm btn-primary">< Home</a>
+				</div>
+				<div class="card-body">
+						<div class="form-floating">
+							<input name="name" type="text" class="form-control mb-2 <?php if(isset($error)){echo "is-invalid";} ?>" id="floatingInput" placeholder="">
+							<label for="floatingInput">User Name</label>
+						</div>
+					</div>
+				<div class="card-footer">
+					<input class="btn btn-primary mb-2" type="submit" name="submit" value="Save">
+				</div>
+			</form>
+		</div>
+    </section>
+
+
+    <script src="bootstrap.bundle.min.js"></script>
+  </body>
 </html>

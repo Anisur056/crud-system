@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>crud-multipage-add</title>
+    <title>crud-multipage-read</title>
 	<link rel="stylesheet" href="bootstrap.min.css">
   </head>
   <body>
     <section class="container py-5">
       <div class="card table-responsive">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h5>Crud-Multipage</h5>
+          <h5>Crud-Multipage-read</h5>
           <a href="add.php" class="btn btn-sm btn-primary">+ Add Name</a>
         </div>
         <div class="card-body">
