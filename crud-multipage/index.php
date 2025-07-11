@@ -1,52 +1,49 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>crud-multipage-read</title>
-	<style type="text/css">
-		body{
-			margin: 0px;
-			padding: 0px;
-			font-family: arial;
-			text-align: center;
-		}
-		form{
-			margin-top: 130px;
-			text-align: center;
-		}
-		input{
-			width:50%;
-			padding: 8px;
-			border:1px solid #ff9900;
-			transition: 0.3s;
-			border-radius: 3px;
-			margin: 8px;
-		}
-		input:focus{
-			box-shadow: 0 0 12px #ff9900;
-		}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>crud-multipage-add</title>
+	<link rel="stylesheet" href="bootstrap.min.css">
+  </head>
+  <body>
+    <section class="container py-5">
+      <div class="card table-responsive">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5>Crud-Multipage</h5>
+          <a href="add.php" class="btn btn-sm btn-primary">+ Add Name</a>
+        </div>
+        <div class="card-body">
+          <table class="table table-hover table-bordered table-sm">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+				<?php
+					require ("db-config.php");
+					$sql = "SELECT * FROM `tbl_user`";
+					$execute = mysqli_query($dbConnection,$sql);
+					while($data = mysqli_fetch_assoc($execute)):?>
+						<tr>
+							<th scope="row"><?= $data['id'] ?></th>
+							<td><?= $data['name'] ?></td>
+							<td>
+								<a class="btn btn-sm btn-info" href='update.php?id=<?= $data['id'] ?>'>Edit</a>
+								<a class="btn btn-sm btn-danger" href='delete.php?id=<?= $data['id'] ?>'>Delete</a><br>
+							</td>
+						</tr>
+				<?php endwhile; ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
 
-	</style>
-</head>
-<body>
 
-<a href="add.php">add new</a>
-	<?php
-		$c = mysqli_connect('localhost','root','','test');
-
-		$do = "SELECT *
-		FROM `tbl_user`";
-
-		$done = mysqli_query($c,$do);
-
-		while($show = mysqli_fetch_assoc($done)){
-			echo $show['name'];
-			echo "<a href='update.php?id=".$show['id']."'>Edit</a> ";
-			echo "<a href='delete.php?id=".$show['id']."'>Delete</a><br>";
-		}
-	?>
-</body>
+    <script src="bootstrap.bundle.min.js"></script>
+  </body>
 </html>
-
-<!-- database name: test -->
-<!-- table name: tbl_user -->
-<!-- table colmn: id,name -->
