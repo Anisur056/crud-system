@@ -1,69 +1,73 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>crud-multipage-update</title>
-	<style type="text/css">
-		body{
-			margin: 0px;
-			padding: 0px;
-			font-family: arial;
-			text-align: center;
-		}
-		form{
-			margin-top: 130px;
-			text-align: center;
-		}
-		input{
-			with:50%;
-			padding: 8px;
-			border:1px solid #ff9900;
-			transition: 0.3s;
-			border-radius: 3px;
-			margin: 8px;
-		}
-		input:focus{
-			box-shadow: 0 0 12px #ff9900;
-		}
+<?php
+	require ("db-config.php");
 
-	</style>
-</head>
-<body>
+	if(isset($_GET['id'])){
+		$id = $_GET['id'];
+	}else{
+		header('location:index.php');
+	}
 
-	<?php
+	$sql = "SELECT * FROM `tbl_user` WHERE id= $id";
+	$execute = mysqli_query($dbConnection,$sql);
+	$data = mysqli_fetch_assoc($execute);
 
-		if(isset($_GET['id'])){
-			$id = $_GET['id'];
+
+	if(isset($_POST['submit'])){
+		$name = $_POST['name'];
+
+		if(!isset($name) || trim($name) == ''){
+			$error = "Input Cannot be empty";
 		}else{
-			header('location:index.php');
-		}
-
-		if(isset($_POST['submit'])){
-			$id = $_POST['id'];
-			$name = $_POST['name'];
-			$c = mysqli_connect('localhost','root','','test');
-			$do = "UPDATE `tbl_user` SET name = '$name' WHERE id = $id ";
-			$done = mysqli_query($c,$do);
-			if($done){
+			$update_id = $_POST['id'];
+			$update_name = $_POST['name'];
+			$sql = "UPDATE `tbl_user` SET name = '$update_name' WHERE id = $update_id ";
+			$execute = mysqli_query($dbConnection,$sql);
+			if($execute){
 				header('location:index.php');
 			}
-		}else{
-
-
-		$c = mysqli_connect('localhost','root','','test');
-		$do = "SELECT * FROM `tbl_user` WHERE id= $id";
-		$done = mysqli_query($c,$do);
-		$show = mysqli_fetch_assoc($done);
-			
-		
-	?>
-
-	<form action="update.php?id=<?php $id;?>" method='post'>
-		<input type="name" name="name" value="<?php echo $show['name'];?>"/><br>
-		<input type="submit" name="submit" value="submit"/>
-		<input type="hidden" name="id" value="<?php echo $id;?>">
-	</form>
-	<?php
+		}
 	}
-	?>
-	</body>
+?>
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>crud-multipage-update</title>
+	<link rel="stylesheet" href="bootstrap.min.css">
+  </head>
+  <body>
+	  <section class="container py-5">
+
+		<?php if(isset($error)): ?>
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<strong>Empty Field.</strong> You cannot leave name empty.
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		<?php endif; ?>
+
+		<div class="card">
+			<form method="post">
+				<div class="card-header d-flex justify-content-between align-items-center">
+					<h5>Crud-Multipage-update</h5>
+					<a href="index.php" class="btn btn-sm btn-primary">< Home</a>
+				</div>
+				<div class="card-body">
+						<div class="form-floating">
+							<input name="name" type="text" class="form-control mb-2 <?php if(isset($error)){echo "is-invalid";} ?>" id="floatingInput" placeholder="" value="<?= $data['name'] ?>">
+							<label for="floatingInput">User Name</label>
+						</div>
+						<input type="hidden" name="id" value="<?= $data['id'] ?>">
+					</div>
+				<div class="card-footer">
+					<input class="btn btn-primary mb-2" type="submit" name="submit" value="Update">
+				</div>
+			</form>
+		</div>
+    </section>
+
+
+    <script src="bootstrap.bundle.min.js"></script>
+  </body>
 </html>
