@@ -1,9 +1,11 @@
 # crud-multipage-system
+A simple crud-multipage-system build in php. 
 
 ## Installation
 
-1. Open db-config.php file.
-2. Save your server configuration.
+1. Create a database in mysql server.
+2. Open db-config.php file.
+3. Save your server configuration.
 
 ```
 $host = "localhost";
