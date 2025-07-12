@@ -4,6 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>crud-multipage-read</title>
+    <style>
+      .img-60p{
+        width: 60px;
+      }
+    </style>
 	<link rel="stylesheet" href="bootstrap.min.css">
   </head>
   <body>
@@ -18,6 +23,7 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
+                <th scope="col">Pic</th>
                 <th scope="col">Name</th>
                 <th scope="col">Action</th>
               </tr>
@@ -30,6 +36,7 @@
 					while($data = mysqli_fetch_assoc($execute)):?>
 						<tr>
 							<th scope="row"><?= $data['id'] ?></th>
+							<td><img class="rounded-circle img-60p" src="<?= $data['pic'] ?>"></td>
 							<td><?= $data['name'] ?></td>
 							<td>
 								<a class="btn btn-sm btn-info" href='update.php?id=<?= $data['id'] ?>'>Edit</a>
