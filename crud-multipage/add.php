@@ -3,20 +3,22 @@
 
 	if(isset($_POST['submit'])){
 		$name = $_POST['name'];
-		$file = $_FILES['pic'];
 
-		if (!isset($_FILES)) {
-			$default_path = 'uploads/default.jpg';
+		$file_name = $_FILES['pic']['name'];
+		$tmp_file_location = $_FILES['pic']['tmp_name'];
+		$move_file_location = 'uploads/'.$file_name;
+
+		if(file_exists($tmp_file_location)){
+			move_uploaded_file($tmp_file_location, $move_file_location);
 		}else{
-			//$destination = __DIR__ . "/uploads/" . $filename;
-			//move_uploaded_file($_FILES["image"]["tmp_name"], $destination);
+			$move_file_location = 'uploads/default.jpg';
 		}
 		
 
 		if(!isset($name) || trim($name) == ''){
 			$error = "Input Cannot be empty";
 		}else{
-			$sql = "INSERT INTO `tbl_user` (`name`,`pic`) VALUES ('$name','$default_path')";
+			$sql = "INSERT INTO `tbl_user` (`name`,`pic`) VALUES ('$name','$move_file_location')";
 			$execute = mysqli_query($dbConnection,$sql);
 			if($execute){
 				header('location: index.php');

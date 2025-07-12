@@ -7,6 +7,7 @@
     <style>
       .img-60p{
         width: 60px;
+        height: 60px;
       }
     </style>
 	<link rel="stylesheet" href="bootstrap.min.css">
