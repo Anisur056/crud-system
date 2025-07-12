@@ -4,17 +4,19 @@
 	if(isset($_POST['submit'])){
 		$name = $_POST['name'];
 
-		$file_name = $_FILES['pic']['name'];
-		$tmp_file_location = $_FILES['pic']['tmp_name'];
-		$move_file_location = 'uploads/'.$file_name;
 
-		if(file_exists($tmp_file_location)){
+		// If image file uploded in tmp location then move it to uploads folder.
+		if(file_exists($_FILES['pic']['tmp_name'])){
+			$file_name = $_FILES['pic']['name'];
+			$file_ext = explode('.',$file_name);
+			$tmp_file_location = $_FILES['pic']['tmp_name'];
+			$move_file_location = 'uploads/'.rand().'.'.$file_ext[1];
 			move_uploaded_file($tmp_file_location, $move_file_location);
 		}else{
 			$move_file_location = 'uploads/default.jpg';
 		}
 		
-
+		// Update name & image path.
 		if(!isset($name) || trim($name) == ''){
 			$error = "Input Cannot be empty";
 		}else{
