@@ -55,16 +55,51 @@
             // Sql command to insert data.
             $insert = $pdo->prepare('INSERT INTO `tbl_user` (`name`,`contact`,`pic`) VALUES(?,?,?)');
             $insert->execute([$name, $contact, $move_file_location]);
-
         }
 
         // Only works if addContactBtn button clicked.
 		if(isset($_POST['updateContentBtn']))
         {
-            echo("update");
-            //UPDATE VALUES WITH PREPARE STATEMENT............./////////////////////////////////
-            // $update = $pdo->prepare('UPDATE phone SET phone=? WHERE id=?');
-            // $update->execute(['+977 2687434','3']);
+            // Takes values of submited html form.
+            // in html {name="..."} attribute in required.
+            $updateNameInput = $_POST['updateNameInput'];
+            $updateContactInput = $_POST['updateContactInput'];
+            $profileUrl = $_POST['profileUrl'];
+            $updateIdInput = $_POST['updateIdInput'];
+
+            // Verify if file exists/ uploded or not, if does then upload profile pic. 
+            if(file_exists($_FILES['profilePicUpdatebtn']['tmp_name']))
+            {
+                // Takes name value of the uploded file.
+                $profie_pic = $_FILES['profilePicUpdatebtn']['name'];
+
+                // Takes uploded file extension.
+                $file_array = explode('.',$profie_pic);
+                $file_ext = $file_array[1];
+
+                // Takes tamporary uploaded file location.
+                $tmp_location = $_FILES['profilePicUpdatebtn']['tmp_name'];
+
+                // Name the uploded file a new random number name.
+                // New location for uploding profile image.
+                $move_file_location = 'uploads/'.rand().'.'.$file_ext;
+
+                // Move tamporary file to uploads folder
+                move_uploaded_file($tmp_location, $move_file_location);
+
+                // verify if default image not set, then delete uploded profile image.
+                if($profileUrl !== 'uploads/default.jpg'){
+                    unlink($profileUrl);
+                }
+
+            }else{
+                // If file not exists or uploded, then set profile image default.
+                $move_file_location = $profileUrl;
+            }
+
+            // Sql command to update data.
+            $update = $pdo->prepare('UPDATE `tbl_user` SET `name`=?, `contact`=?, `pic`=? WHERE id=?');
+            $update->execute([$updateNameInput, $updateContactInput, $move_file_location, $updateIdInput]);
         }
 
         // Only works if addContactBtn button clicked.
@@ -85,7 +120,7 @@
         }
 	}
 
-
+    // read all data from database.
 	$show = $pdo->prepare('SELECT * FROM `tbl_user`');
 	$show->execute();
 ?>
@@ -184,17 +219,20 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="floatingInput" placeholder="">
+                                                        <input name="updateNameInput" type="text" class="form-control" id="floatingInput" placeholder="" value="<?= $data['name'] ?>">
                                                         <label for="floatingInput">Name (Fast Name, Last Name)</label>
                                                     </div>
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="floatingInput" placeholder="">
+                                                        <input name="updateContactInput" type="text" class="form-control" id="floatingInput" placeholder="" value="<?= $data['contact'] ?>">
                                                         <label for="floatingInput">Contact (+88 01000 000 000)</label>
                                                     </div>
+                                                    <img class="rounded-circle img-responsive mb-3" src="<?= $data['pic'] ?>">
                                                     <div class="form-control mb-3">
                                                         <label for="formFileSm" class="form-label">Upload Pic</label>
-                                                        <input name="profilePicbtn" class="form-control" id="formFileSm" type="file">
+                                                        <input name="profilePicUpdatebtn" class="form-control" id="formFileSm" type="file">
                                                     </div>
+                                                    <input name="profileUrl" type="hidden" value="<?= $data['pic'] ?>">
+                                                    <input name="updateIdInput" type="hidden" value="<?= $data['id'] ?>">
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
