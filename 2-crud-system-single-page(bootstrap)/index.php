@@ -70,10 +70,18 @@
         // Only works if addContactBtn button clicked.
 		if(isset($_POST['deleteContentBtn']))
         {
-            echo("delete");
-            //DELETE VALUES WITH PREPARE STATEMENT............./////////////////////////////////
-            // $delete = $pdo->prepare('DELETE FROM phone WHERE id=?');
-            // $delete->execute(['4']);
+            // Takes table data id from hidden field.
+            $deleteIdInput = $_POST['deleteIdInput'];
+            $deletePicInput = $_POST['deletePicInput'];
+
+            // delete table record from database.
+            $delete = $pdo->prepare('DELETE FROM `tbl_user` WHERE id=?');
+            $delete->execute([$deleteIdInput]);
+
+            // verify if default image not set, then delete uploded profile image.
+            if($deletePicInput !== 'uploads/default.jpg'){
+                unlink($deletePicInput);
+            }
         }
 	}
 
@@ -210,6 +218,8 @@
                                                     Are You Want to Delete this Contact?
                                                 </div>
                                                 <div class="modal-footer">
+                                                    <input name="deleteIdInput" type="hidden" value="<?= $data['id'] ?>">
+                                                    <input name="deletePicInput" type="hidden" value="<?= $data['pic'] ?>">
                                                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>
                                                     <button name="deleteContentBtn" type="submit" class="btn btn-danger">Yes</button>
                                                 </div>
