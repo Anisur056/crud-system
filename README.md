@@ -7,5 +7,3 @@
 2. crud-system-single-page(bootstrap)
 3. crud-system-custom-mvc
 4. crud-system-laravel
-5. 
-
