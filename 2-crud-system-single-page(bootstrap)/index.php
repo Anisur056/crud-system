@@ -77,18 +77,9 @@
         }
 	}
 
-	//SELECT VALUES WITH PREPARE STATEMENT............./////////////////////////////////
-	// $select = $pdo->prepare('SELECT * FROM phone WHERE name=? LIMIT 5');
-	// $select->execute(['RAIHAN UDDIN']);
 
-	// while ($row = $select->fetch()) {
-	// 	echo '<table><tr>';
-	// 	echo '<td>'.$row['id'].'<td>';
-	// 	echo '<td>'.$row['name'].'<td>';
-	// 	echo '<td>'.$row['phone'].'<td>';
-	// 	echo '<td>'.$row['date'].'<td>';
-	// 	echo '</tr></table>';
-	// }
+	$show = $pdo->prepare('SELECT * FROM `tbl_user`');
+	$show->execute();
 ?>
 
 <!DOCTYPE html>
@@ -154,77 +145,79 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <img src="theme/img/01.jpg" class="rounded-circle" style="width:50px;">
-                                    </td>
-                                    <td>Anisur Rahman</td>
-                                    <td>01871123427</td>
-                                    <td>
-                                        <!-- Button: edit button for open edit modal form -->
-                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editContact">
-                                            Edit
-                                        </button>
+                                <?php while($data = $show->fetch()):?>
+                                    <tr>
+                                        <td>
+                                            <img src="<?= $data['pic'] ?>" class="rounded-circle" style="width:50px;height:50px;">
+                                        </td>
+                                        <td><?= $data['name'] ?></td>
+                                        <td><?= $data['contact'] ?></td>
+                                        <td>
+                                            <!-- Button: edit button for open edit modal form -->
+                                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editContact">
+                                                Edit
+                                            </button>
+    
+                                            <!-- Button: delete button for open delete modal form -->
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteContact">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
 
-                                        <!-- Button: delete button for open delete modal form -->
-                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteContact">
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
+                                    <!-- Modal: open edit contact form modal -->
+                                    <div class="modal fade" id="editContact" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <form method="post" enctype="multipart/form-data">
+                                                <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Contact</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-floating mb-3">
+                                                        <input type="text" class="form-control" id="floatingInput" placeholder="">
+                                                        <label for="floatingInput">Name (Fast Name, Last Name)</label>
+                                                    </div>
+                                                    <div class="form-floating mb-3">
+                                                        <input type="text" class="form-control" id="floatingInput" placeholder="">
+                                                        <label for="floatingInput">Contact (+88 01000 000 000)</label>
+                                                    </div>
+                                                    <div class="form-control mb-3">
+                                                        <label for="formFileSm" class="form-label">Upload Pic</label>
+                                                        <input name="profilePicbtn" class="form-control" id="formFileSm" type="file">
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button name="updateContentBtn" type="submit" class="btn btn-primary">Save</button>
+                                                </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
 
-                                <!-- Modal: open edit contact form modal -->
-                                <div class="modal fade" id="editContact" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <form method="post" enctype="multipart/form-data">
-                                            <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Contact</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="floatingInput" placeholder="">
-                                                    <label for="floatingInput">Name (Fast Name, Last Name)</label>
+                                    <!-- Modal: open delete contact form modal -->
+                                    <div class="modal fade bg-danger" id="deleteContact" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <form method="post">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Contact</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                                <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="floatingInput" placeholder="">
-                                                    <label for="floatingInput">Contact (+88 01000 000 000)</label>
+                                                <div class="modal-body">
+                                                    Are You Want to Delete this Contact?
                                                 </div>
-                                                <div class="form-control mb-3">
-                                                    <label for="formFileSm" class="form-label">Upload Pic</label>
-                                                    <input name="profilePicbtn" class="form-control" id="formFileSm" type="file">
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>
+                                                    <button name="deleteContentBtn" type="submit" class="btn btn-danger">Yes</button>
                                                 </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button name="updateContentBtn" type="submit" class="btn btn-primary">Save</button>
-                                            </div>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
-                                </div>
-
-                                <!-- Modal: open delete contact form modal -->
-                                <div class="modal fade bg-danger" id="deleteContact" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <form method="post">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Contact</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Are You Want to Delete this Contact?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>
-                                                <button name="deleteContentBtn" type="submit" class="btn btn-danger">Yes</button>
-                                            </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
+                                <?php endwhile;?>
                             </tbody>
                         </table>
                     </div>
