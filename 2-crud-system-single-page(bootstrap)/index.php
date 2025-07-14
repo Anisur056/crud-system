@@ -57,7 +57,7 @@
             $insert->execute([$name, $contact, $move_file_location]);
         }
 
-        // Only works if addContactBtn button clicked.
+        // Only works if updateContentBtn button clicked.
 		if(isset($_POST['updateContentBtn']))
         {
             // Takes values of submited html form.
@@ -102,7 +102,7 @@
             $update->execute([$updateNameInput, $updateContactInput, $move_file_location, $updateIdInput]);
         }
 
-        // Only works if addContactBtn button clicked.
+        // Only works if deleteContentBtn button clicked.
 		if(isset($_POST['deleteContentBtn']))
         {
             // Takes table data id from hidden field.
@@ -120,8 +120,21 @@
         }
 	}
 
-    // read all data from database.
-	$show = $pdo->prepare('SELECT * FROM `tbl_user`');
+    // Script to show data with pagination features.
+    // Limit for data show per page.
+    $limit_to_show = 3;
+
+    // Get the curret page number.
+    if(isset($_GET['page'])){
+        $url_page_number = $_GET['page'];
+    }else{
+        $url_page_number = 1;
+    }
+
+    // Offset to show data from.
+    $offset = ($url_page_number-1)*$limit_to_show;
+    
+	$show = $pdo->prepare("SELECT * FROM `tbl_user` ORDER BY `id` DESC LIMIT $offset, $limit_to_show");
 	$show->execute();
 ?>
 
@@ -181,6 +194,7 @@
                         <table class="table table-bordered table-sm table-hover">
                             <thead>
                                 <tr>
+                                    <th>#</th>
                                     <th>Profile</th>
                                     <th>Name</th>
                                     <th>Contact</th>
@@ -190,6 +204,7 @@
                             <tbody>
                                 <?php while($data = $show->fetch()):?>
                                     <tr>
+                                        <td><?= $data['id'] ?></td>
                                         <td>
                                             <img src="<?= $data['pic'] ?>" class="rounded-circle" style="width:50px;height:50px;">
                                         </td>
@@ -268,6 +283,28 @@
                                 <?php endwhile;?>
                             </tbody>
                         </table>
+                    </div>
+                    <div class="card-footer">
+                        <nav>
+                            <ul class="pagination float-end m-0">
+                                <?php
+                                    // Script to show page number
+                                    $select_users = $pdo->prepare('SELECT * FROM `tbl_user`');
+                                    $select_users->execute();
+                                    $total_records = $select_users->rowCount();
+                                    if($total_records > 0){
+                                        $total_pages = ceil($total_records/$limit_to_show);
+                                        for($page_number = 1; $page_number<=$total_pages; $page_number++){ ?>
+                                            <li class="page-item"> 
+                                                <a class="page-link <?php if($page_number == $url_page_number){echo('active');} ?>" href="?page=<?= $page_number ?>">
+                                                    <?= $page_number ?>
+                                                </a>
+                                            </li><?php
+                                        }
+                                    }
+                                ?>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
