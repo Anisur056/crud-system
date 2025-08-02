@@ -17,7 +17,7 @@
 
         <div class="row">
             <div class="col-4">
-                <form action="{{ route('users.store') }}" method="post">
+                <form action="{{ route('users.store') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label class="form-label">Name</label>
@@ -84,6 +84,11 @@
                             <option value="Saidpur">Saidpur</option>
                             <option value="Thakurgaon">Thakurgaon</option>
                         </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Upload Profile Pic</label>
+                        <input class="form-control" type="file" name="profile_pic">
+                        <span class="text-danger"> @error('profile_pic') {{$message}} @enderror </span>
                     </div>
                     <div class="mb-3">
                         <button type="submit" class="btn btn-primary">Save</button>

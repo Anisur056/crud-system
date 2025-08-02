@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('age');
             $table->string('city');
+            $table->string('profile_pic')->default('assets/img/default.jpg');
             $table->timestamps();
         });
     }

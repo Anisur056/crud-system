@@ -16,6 +16,10 @@
         <table class="table table-striped table-bordered">
             <tbody>
                 <tr>
+                    <td>Profile: </td>
+                    <td><img src="{{ asset($user->profile_pic)}}" class="rounded-circle" style="width:200px;height:200px;"></td>
+                </tr> 
+                <tr>
                     <td>Name: </td>
                     <td>{{$user->name}}</td>
                 </tr> 

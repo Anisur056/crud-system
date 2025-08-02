@@ -17,7 +17,7 @@
 
         <div class="row">
             <div class="col-4">
-                <form action="{{ route('users.update',$data->id) }}" method="post">
+                <form action="{{ route('users.update',$data->id) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="mb-3">
@@ -51,6 +51,14 @@
                                 class="form-control @error('city') is-invalid @enderror" 
                                 name="city">
                         <span class="text-danger"> @error('city') {{$message}} @enderror </span>
+                    </div>
+
+                    <img id="update_pic_file" src="{{ asset($data->profile_pic)}}" class="rounded-circle mb-3" style="width:200px;height:200px;">
+
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Update Profile Pic</label>
+                        <input class="form-control" type="file" name="profile_pic" onchange="document.querySelector('#update_pic_file').src=window.URL.createObjectURL(this.files[0])">
+                        <span class="text-danger"> @error('profile_pic') {{$message}} @enderror </span>
                     </div>
                     <div class="mb-3">
                         <button type="submit" class="btn btn-primary">Update</button>

@@ -20,6 +20,7 @@
             <thead>
                 <tr>
                     <th>#</th>
+                    <th>Pic</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Age</th>
@@ -33,6 +34,7 @@
                 @foreach ($users as $user)
                     <tr>
                         <td>{{$user->id}}</td>
+                        <td><img src="{{ asset($user->profile_pic)}}" class="rounded-circle" style="width:50px;height:50px;"></td>
                         <td>{{$user->name}}</td>
                         <td>{{$user->email}}</td>
                         <td>{{$user->age}}</td>
