@@ -26,3 +26,7 @@ php artisan migrate --seed
 ```
 php artisan serve
 ```
+## open in web url
+```
+http://127.0.0.1:8000/users
+```
